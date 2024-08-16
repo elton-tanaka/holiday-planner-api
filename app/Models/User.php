@@ -44,4 +44,9 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function holidays()
+    {
+        return $this->belongsToMany(Holiday::class);
+    }
 }
