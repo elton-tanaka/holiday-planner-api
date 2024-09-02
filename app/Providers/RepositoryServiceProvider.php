@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use App\Repositories\Contracts\HolidayRepositoryInterface;
 use App\Repositories\Contracts\UserRepositoryInterface;
+use App\Repositories\HolidayRepository;
+use App\Repositories\UserRepository;
 use Illuminate\Support\ServiceProvider;
 
 class RepositoryServiceProvider extends ServiceProvider

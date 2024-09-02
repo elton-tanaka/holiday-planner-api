@@ -21,7 +21,7 @@ class HolidayRepository implements HolidayRepositoryInterface
 
     public function getHolidayById($id)
     {
-        return $this->holiday->findOrFail($id);
+        return $this->holiday->with('users')->findOrFail($id);
     }
 
     public function createHoliday(array $holiday)
