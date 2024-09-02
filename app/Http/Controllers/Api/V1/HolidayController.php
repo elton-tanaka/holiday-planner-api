@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Requests\V1\HolidayRequest;
 use App\Services\HolidayService;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class HolidayController extends Controller
 {
@@ -79,7 +80,7 @@ class HolidayController extends Controller
         }
     }
 
-    public function destroy($id)
+    public function destroy(int $id)
     {
         try {
             $this->holidayService->destroyHoliday($id);
@@ -87,6 +88,26 @@ class HolidayController extends Controller
             return response()->json([
                 'message' => 'Holiday deleted',
             ]);
+        } catch (\Exception $e) {
+            return response(['message' => 'Error: '.$e->getMessage()], 500);
+        }
+    }
+
+    public function generatePdf(int $id)
+    {
+        try {
+            $holiday = $this->holidayService->getHolidayById($id);
+            $data = [
+                'title' => $holiday->title,
+                'description' => $holiday->description,
+                'date' => $holiday->date,
+                'location' => $holiday->location,
+                'participants' => $holiday->users->pluck('name')->toArray(),
+            ];
+
+            $pdf = Pdf::loadView('pdf', $data);
+
+            return $pdf->download('holiday.pdf');
         } catch (\Exception $e) {
             return response(['message' => 'Error: '.$e->getMessage()], 500);
         }

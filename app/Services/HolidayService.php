@@ -21,7 +21,12 @@ class HolidayService
 
     public function getHolidayById($id)
     {
-        return $this->holidayRepository->getHolidayById($id);
+        try {
+            return $this->holidayRepository->getHolidayById($id);
+
+        } catch (\Exception $e) {
+            throw new \Exception('Couldnt find holiday');
+        }
     }
 
     public function createHoliday(array $holiday)

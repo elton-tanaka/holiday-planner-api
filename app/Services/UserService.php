@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Holiday;
 use App\Repositories\Contracts\UserRepositoryInterface;
 use Illuminate\Support\Facades\DB;
 
@@ -38,7 +39,7 @@ class UserService
         } catch (\Exception $e) {
             DB::rollBack();
 
-            return response(['message' => 'Error: '.$e->getMessage()]);
+            throw new \Exception($e->getMessage());
         }
 
     }
@@ -54,5 +55,31 @@ class UserService
     public function destroyUser(int $id)
     {
         return $this->userRepository->destroyUser($id);
+    }
+
+    public function joinHoliday(int $holidayId)
+    {
+        DB::beginTransaction();
+        try {
+            $user = auth()->user();
+            $holiday = Holiday::find($holidayId);
+
+            if (! $holiday) {
+                throw new \Exception('Holiday not found');
+            }
+
+            if ($user->holidays()->where('holiday_id', $holidayId)->exists()) {
+                throw new \Exception('User is already attached to this holiday');
+            }
+
+            $user->holidays()->attach($holidayId);
+            DB::commit();
+
+            return $user;
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            throw new \Exception($e->getMessage());
+        }
     }
 }
