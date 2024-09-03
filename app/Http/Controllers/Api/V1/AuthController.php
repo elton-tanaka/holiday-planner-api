@@ -24,7 +24,7 @@ class AuthController extends Controller
             $user = $this->userService->createUser($request->all());
             $accessToken = $user->createToken('authToken')->accessToken;
 
-            return response(['user' => $user, 'access_token' => $accessToken]);
+            return response(['user' => $user, 'access_token' => $accessToken], 201);
 
         } catch (\Exception $e) {
             return response(['message' => 'Error: '.$e->getMessage()], 500);
