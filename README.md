@@ -2,7 +2,7 @@
 
 
 ## Introduction
-This project is a RESTful API using Laravel to manage holiday plans. Its built using MySQL for the database, Passport for authentication and PHPUnit for testing. As for the docker container its built using Sail.
+This project is a RESTful API developed with Laravel, designed to manage holiday plans efficiently. It utilizes MySQL as the database, Passport for secure authentication, and PHPUnit for comprehensive testing. The architecture is structured with a repository/interface pattern to ensure a clear separation of concerns, enhancing both maintainability and testability. The application runs in a Docker container powered by Laravel Sail for seamless development and deployment.
 
 ## Requirements
 - PHP >= 8.2
